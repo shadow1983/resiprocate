@@ -13,9 +13,8 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/build/cmake_modu
 # Top-level user-settable variables (with defaults)
 # Those can be queried from the command line using "cmake -LH" and can be
 # specified on the command line, using cmake-gui or ccmake.
-SET(WITH_SSL true CACHE BOOL "Link against SSL libraries")
-SET(WITH_C_ARES false CACHE BOOL "Link against libc-ares (rather than rutil/dns/ares)")
-SET(OPENSSL_ROOT_DIR "" CACHE STRING "Root installation of OpenSSL (to specify a given version)")
+OPTION(WITH_SSL "Link against SSL libraries" TRUE)
+OPTION(WITH_C_ARES "Link against libc-ares (rather than rutil/dns/ares)" FALSE)
 
 ####################
 ### Dependencies ###

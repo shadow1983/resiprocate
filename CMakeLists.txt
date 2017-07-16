@@ -70,6 +70,12 @@ ELSE()
    SET(POPT_LIBRARIES "")
 ENDIF()
 
+# ASIO
+FIND_PACKAGE(ASIO)
+IF(${ASIO_FOUND})
+   INCLUDE_DIRECTORIES(${ASIO_INCLUDE_DIRS})
+ENDIF()
+
 # Boost.Asio
 # TODO: Is using Boost's asio OK? Or should it use the old/independant asio
 # libs?
@@ -163,10 +169,21 @@ ELSE()
    MESSAGE("-- Missing cajun, will not build repro")
 ENDIF()
 
-IF(${OPENSSL_FOUND} AND ${Boost_FOUND} AND ${SRTP_FOUND})
+IF(${OPENSSL_FOUND} AND ${ASIO_FOUND} AND ${Boost_FOUND})
    ADD_SUBDIRECTORY(reTurn)
-   ADD_SUBDIRECTORY(reflow)
 ELSE()
    MESSAGE("-- Missing libraries, will not build reTurn")
+ENDIF()
+
+IF(${OPENSSL_FOUND} AND ${ASIO_FOUND} AND ${Boost_FOUND} AND ${SRTP_FOUND})
+   ADD_SUBDIRECTORY(reflow)
+ELSE()
    MESSAGE("-- Missing libraries, will not build reFlow")
 ENDIF()
+
+###############
+### Summary ###
+###############
+
+include(FeatureSummary)
+feature_summary(WHAT ALL)

@@ -1,6 +1,7 @@
 # Used for installation
 SET(INCLUDES
    AbandonServerTransaction.hxx
+   AddTransport.hxx
    Aor.hxx
    ApiCheck.hxx
    ApiCheckList.hxx
@@ -26,10 +27,12 @@ SET(INCLUDES
    DataParameter.hxx
    DateCategory.hxx
    DeprecatedDialog.hxx
+   DialogInfoContents.hxx
    DnsInterface.hxx
    DnsResult.hxx
    DnsResultMessage.hxx
    DtlsMessage.hxx
+   DtmfPayloadContents.hxx
    Embedded.hxx
    EnableFlowTimer.hxx
    EventStackThread.hxx
@@ -41,7 +44,9 @@ SET(INCLUDES
    ExternalBodyContents.hxx
    FloatParameter.hxx
    GenericContents.hxx
+   GenericPidfContents.hxx
    GenericUri.hxx
+   HEPSipMessageLoggingHandler.hxx
    HeaderFieldValue.hxx
    HeaderFieldValueList.hxx
    Headers.hxx
@@ -53,6 +58,7 @@ SET(INCLUDES
    InteropHelper.hxx
    InterruptableStackThread.hxx
    InvalidContents.hxx
+   InvokeAfterSocketCreationFunc.hxx
    KeepAliveMessage.hxx
    KeepAlivePong.hxx
    LazyParser.hxx
@@ -97,6 +103,7 @@ SET(INCLUDES
    SendData.hxx
    SERNonceHelper.hxx
    ShutdownMessage.hxx
+   SipConfigParse.hxx
    SipFrag.hxx
    SipMessage.hxx
    SipStack.hxx
@@ -198,9 +205,11 @@ SET(SOURCES
    DataParameter.cxx
    DateCategory.cxx
    DeprecatedDialog.cxx
+   DialogInfoContents.cxx
    DnsInterface.cxx
    DnsResult.cxx
    DtlsMessage.cxx
+   DtmfPayloadContents.cxx
    Embedded.cxx
    EventStackThread.cxx
    ExistsOrDataParameter.cxx
@@ -211,7 +220,9 @@ SET(SOURCES
    ExternalBodyContents.cxx
    FloatParameter.cxx
    GenericContents.cxx
+   GenericPidfContents.cxx
    GenericUri.cxx
+   HEPSipMessageLoggingHandler.cxx
    HeaderFieldValue.cxx
    HeaderFieldValueList.cxx
    Headers.cxx
@@ -259,6 +270,7 @@ SET(SOURCES
    SdpContents.cxx
    SecurityAttributes.cxx
    SERNonceHelper.cxx
+   SipConfigParse.cxx
    SipFrag.cxx
    SipMessage.cxx
    SipStack.cxx

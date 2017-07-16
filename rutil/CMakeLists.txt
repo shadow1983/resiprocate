@@ -35,6 +35,7 @@ SET(INCLUDES
    Logger.hxx
    MD5Stream.hxx
    Mutex.hxx
+   NetNs.hxx
    ParseBuffer.hxx
    ParseException.hxx
    Poll.hxx
@@ -44,6 +45,7 @@ SET(INCLUDES
    RWMutex.hxx
    Random.hxx
    RecursiveMutex.hxx
+   ResipAssert.h
    SelectInterruptor.hxx
    ServerProcess.hxx
    Sha1.hxx
@@ -59,11 +61,15 @@ SET(INCLUDES
    TimeLimitFifo.hxx
    Timer.hxx
    TransportType.hxx
+   WinCompat.hxx
    XMLCursor.hxx
    compat.hxx
    resipfaststreams.hxx
    vmd5.hxx
    vthread.hxx
+
+   hep/HepAgent.hxx
+   hep/ResipHep.hxx
 )
 
 SET(INCLUDES_WIN
@@ -123,12 +129,14 @@ SET(SOURCES
    FdPoll.cxx
    FileSystem.cxx
    GeneralCongestionManager.cxx
+   GenericIPAddress.cxx
    HeapInstanceCounter.cxx
    KeyValueStore.cxx
    Lock.cxx
    Log.cxx
    MD5Stream.cxx
    Mutex.cxx
+   NetNs.cxx
    ParseBuffer.cxx
    ParseException.cxx
    Poll.cxx
@@ -153,6 +161,9 @@ SET(SOURCES
    TransportType.cxx
    vmd5.cxx
    XMLCursor.cxx
+
+   hep/HepAgent.cxx
+   hep/ResipHep.cxx
 )
 
 # TODO: Add WceCompat.cxx on WinCE

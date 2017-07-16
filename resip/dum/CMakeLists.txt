@@ -55,6 +55,7 @@ SET(INCLUDES
    HttpProvider.hxx
    IdentityHandler.hxx
    InMemoryRegistrationDatabase.hxx
+   InMemorySyncPubDb.hxx
    InMemorySyncRegDb.hxx
    InviteDialogs.hxx
    InviteSession.hxx
@@ -76,6 +77,7 @@ SET(INCLUDES
    Profile.hxx
    PublicationCreator.hxx
    PublicationHandler.hxx
+   PublicationPersistenceManager.hxx
    RADIUSServerAuthManager.hxx
    RedirectHandler.hxx
    RedirectManager.hxx
@@ -155,6 +157,7 @@ SET(SOURCES
    HttpProvider.cxx
    IdentityHandler.cxx
    InMemoryRegistrationDatabase.cxx
+   InMemorySyncPubDb.cxx
    InMemorySyncRegDb.cxx
    InviteSession.cxx
    InviteSessionCreator.cxx

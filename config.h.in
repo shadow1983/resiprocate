@@ -6,7 +6,7 @@
 #cmakedefine DB_HEADER "@DB_HEADER@"
 #cmakedefine HAVE_EPOLL
 #cmakedefine HAVE_POPT_H 
-#cmakedefine USE_SSL
+#cmakedefine01 USE_SSL
 #cmakedefine USE_CARES
-#cmakedefine USE_ARES
+#cmakedefine01 USE_ARES
 #cmakedefine01 HAVE_CLOCK_GETTIME_MONOTONIC

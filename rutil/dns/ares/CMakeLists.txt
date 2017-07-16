@@ -38,9 +38,14 @@ INCLUDE_DIRECTORIES(.)
 IF(CMAKE_HOST_WIN32)
    # Use static .lib on Windows because resip ares doesn't export any symbols
    ADD_LIBRARY(ares ${SOURCES})
-   TARGET_LINK_LIBRARIES(ares ws2_32)
+   TARGET_LINK_LIBRARIES(ares PRIVATE ws2_32)
 ELSE()
    ADD_LIBRARY(ares SHARED ${SOURCES})
+ENDIF()
+
+IF(APPLE)
+   TARGET_LINK_LIBRARIES(ares PRIVATE "-framework CoreFoundation")
+   TARGET_LINK_LIBRARIES(ares PRIVATE "-framework SystemConfiguration")
 ENDIF()
 
 ADD_EXECUTABLE(ahost ahost.c)

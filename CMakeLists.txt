@@ -146,7 +146,7 @@ FUNCTION(TEST_BASE)
       ${ARGV9}
       ${ARGV10}
    )
-   ADD_TEST(${ARGV0} ${ARGV0})
+   ADD_TEST(NAME ${ARGV0} COMMAND $<TARGET_FILE:${ARGV0}>)
 ENDFUNCTION(TEST_BASE)
 
 # Used to group targets together when CMake generates projects for IDEs

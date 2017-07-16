@@ -19,7 +19,25 @@
 //   https://gcc.gnu.org/onlinedocs/libstdc++/manual/abi.html
 #include <map> // force include of nonstandard <bits/c++config.h>
 
-#  if ( defined(__GLIBCXX__) && (__GLIBCXX__ >= 20080306) ) // >= 4.3.0
+#  if defined(__cplusplus) && __cplusplus >= 201103L
+#    include <unordered_map>
+#    include <unordered_set>
+#    define HASH_MAP_NAMESPACE std
+#    define HashMap std::unordered_map
+#    define HashSet std::unordered_set
+#    define HashMultiMap std::unordered_multimap
+
+#    define HashValue(type)                            \
+     namespace std                                     \
+     {                                                 \
+        template <>                                    \
+        struct hash<type>                              \
+        {                                              \
+           size_t operator()(const type& data) const;  \
+        };                                             \
+     }
+#    define HashValueImp(type, ret) size_t HASH_MAP_NAMESPACE::hash<type>::operator()(const type& data) const { return ret; }
+#  elif ( defined(__GLIBCXX__) && (__GLIBCXX__ >= 20080306) ) // >= 4.3.0
 #    include <tr1/unordered_map>
 #    include <tr1/unordered_set>
 #    define HASH_MAP_NAMESPACE std::tr1

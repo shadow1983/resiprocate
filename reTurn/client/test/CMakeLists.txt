@@ -1,12 +1,15 @@
-include_directories(../..)
+function(manual_test)
+   add_executable(${ARGV})
+   set_target_properties(${ARGV0} PROPERTIES FOLDER reTurn/client/Tests)
+   target_link_libraries(${ARGV0} reTurnClient rutil ${OPENSSL_LIBRARIES})
+endfunction()
 
-function(TEST)
+function(test)
    test_base(${ARGV})
    set_target_properties(${ARGV0} PROPERTIES FOLDER reTurn/client/Tests)
    target_link_libraries(${ARGV0} reTurnClient rutil ${OPENSSL_LIBRARIES})
 endfunction()
 
-
-test(TestAsyncClient TestAsyncClient.cxx)
-test(TestRtpLoad TestRtpLoad.cxx)
-test(TestClient TestClient.cxx)
+manual_test(TestAsyncClient TestAsyncClient.cxx)
+manual_test(TestRtpLoad TestRtpLoad.cxx)
+manual_test(TestClient TestClient.cxx)

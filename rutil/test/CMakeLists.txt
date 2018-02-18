@@ -9,6 +9,7 @@ function(test)
    test_base(${ARGV})
    set_target_properties(${ARGV0} PROPERTIES FOLDER rutil/Tests)
    target_link_libraries(${ARGV0} rutil)
+   set_tests_properties(${ARGV0} PROPERTIES WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endfunction()
 
 test(testCompat testCompat.cxx)

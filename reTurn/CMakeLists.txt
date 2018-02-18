@@ -1,6 +1,6 @@
 # TODO - Do we need to actually install these files since reTurn is not a
 # library?
-SET(INCLUDES
+set(INCLUDES
    AsyncSocketBase.hxx
    AsyncSocketBaseHandler.hxx
    AsyncTcpSocketBase.hxx
@@ -31,7 +31,7 @@ SET(INCLUDES
    reTurnServer.hxx
 )
 
-SET(SOURCES
+set(SOURCES
    AsyncSocketBase.cxx
    AsyncTcpSocketBase.cxx
    AsyncTlsSocketBase.cxx
@@ -61,15 +61,15 @@ SET(SOURCES
    reTurnServer.cxx
 )
 
-INCLUDE_DIRECTORIES(..)
+include_directories(..)
 
-SET(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil)
+set(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil)
 
-ADD_EXECUTABLE(reTurnServer ${SOURCES} ${INCLUDES})
-TARGET_LINK_LIBRARIES(reTurnServer ${TARGET_LIBS})
-SET_TARGET_PROPERTIES(reTurnServer PROPERTIES FOLDER reTurn)
+add_executable(reTurnServer ${SOURCES} ${INCLUDES})
+target_link_libraries(reTurnServer ${TARGET_LIBS})
+set_target_properties(reTurnServer PROPERTIES FOLDER reTurn)
 
-INSTALL(TARGETS reTurnServer DESTINATION bin)
+install(TARGETS reTurnServer DESTINATION bin)
 
-ADD_SUBDIRECTORY(client)
-ADD_SUBDIRECTORY(test)
+add_subdirectory(client)
+add_subdirectory(test)

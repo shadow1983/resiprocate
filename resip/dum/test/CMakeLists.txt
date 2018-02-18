@@ -1,20 +1,20 @@
-INCLUDE_DIRECTORIES(../..)
+include_directories(../..)
 
-FUNCTION(TEST)
-   TEST_BASE(${ARGV})
-   IF(CMAKE_HOST_WIN32)
+function(TEST)
+   test_base(${ARGV})
+   if(CMAKE_HOST_WIN32)
       TARGET_LINK_LIBRARIES(${ARGV0} rutil resiprocate dum)
-   ELSE()
+   else()
       TARGET_LINK_LIBRARIES(${ARGV0} rutil resip dum ${POPT_LIBRARIES})
-   ENDIF()
-   SET_TARGET_PROPERTIES(${ARGV0} PROPERTIES FOLDER resip/Tests)   
-ENDFUNCTION()
+   endif()
+   set_target_properties(${ARGV0} PROPERTIES FOLDER resip/Tests)   
+endfunction()
 
 # TODO: A lot of files still depend on config.h, have CMake generate it if
 # still needed
 # TODO: Only enable tests that are already enabled by default... Some are not even compiling
 
-SET(SHARED_SRC
+set(SHARED_SRC
    CommandLineParser.cxx
    RegEventClient.cxx
    UserAgent.cxx
@@ -42,9 +42,9 @@ SET(SHARED_SRC
 #testDumTimer.cxx
 #testIdentity.cxx
 
-TEST(BasicCall BasicCall.cxx ${SHARED_SRC})
-TEST(basicRegister basicRegister.cxx ${SHARED_SRC})
-TEST(basicMessage basicMessage.cxx ${SHARED_SRC})
-TEST(basicClient basicClient.cxx ${SHARED_SRC})
-TEST(testRequestValidationHandler testRequestValidationHandler.cxx ${SHARED_SRC})
+test(BasicCall BasicCall.cxx ${SHARED_SRC})
+test(basicRegister basicRegister.cxx ${SHARED_SRC})
+test(basicMessage basicMessage.cxx ${SHARED_SRC})
+test(basicClient basicClient.cxx ${SHARED_SRC})
+test(testRequestValidationHandler testRequestValidationHandler.cxx ${SHARED_SRC})
 

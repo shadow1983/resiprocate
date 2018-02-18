@@ -3,7 +3,7 @@ add_subdirectory(test)
 
 ########### next target ###############
 
-SET(repro_LIB_SRCS
+set(repro_LIB_SRCS
    RouteStore.cxx
    UserStore.cxx
    ConfigStore.cxx

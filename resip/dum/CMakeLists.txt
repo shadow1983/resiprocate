@@ -1,5 +1,5 @@
 # Used for installation
-SET(INCLUDES
+set(INCLUDES
    AppDialog.hxx
    AppDialogSet.hxx
    AppDialogSetFactory.hxx
@@ -107,12 +107,12 @@ SET(INCLUDES
    WsCookieAuthManager.hxx
 )
 
-SET(INCLUDES_SSL
+set(INCLUDES_SSL
    ssl/EncryptionManager.hxx
 )
 
 # Used for compilation
-SET(SOURCES
+set(SOURCES
    AppDialog.cxx
    AppDialogSet.cxx
    AppDialogSetFactory.cxx
@@ -195,51 +195,51 @@ SET(SOURCES
    WsCookieAuthManager.cxx
 )
 
-SET(SOURCES_SSL
+set(SOURCES_SSL
    ssl/EncryptionManager.cxx
 )
 
 # If compiling with OpenSSL support, add extra SSL related source and header
 # files
-IF(${OPENSSL_FOUND})
-   LIST(APPEND SOURCES ${SOURCES_SSL}) 
-   LIST(APPEND INCLUDES ${INCLUDES_SSL}) 
+if(${OPENSSL_FOUND})
+   list(APPEND SOURCES ${SOURCES_SSL}) 
+   list(APPEND INCLUDES ${INCLUDES_SSL}) 
    
    # Since some ssl files are under the ssl folder they require their own
-   # INSTALL command
-   INSTALL(FILES ${INCLUDES_SSL} DESTINATION include/resip/dum/ssl)
-ENDIF()
+   # install command
+   install(FILES ${INCLUDES_SSL} DESTINATION include/resip/dum/ssl)
+endif()
 
-INCLUDE_DIRECTORIES(../..)
+include_directories(../..)
 
-SET(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil ${ARES_LIBRARIES})
+set(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil ${ARES_LIBRARIES})
 
-IF(CMAKE_HOST_WIN32)
+if(CMAKE_HOST_WIN32)
    # Static library on Windows
-   SET(TARGET_TYPE "")
+   set(TARGET_TYPE "")
 
-   LIST(APPEND TARGET_LIBS resiprocate)
+   list(APPEND TARGET_LIBS resiprocate)
 
    # TODO Is this really needed?
-   LIST(APPEND TARGET_LIBS winmm)
-ELSE()
+   list(APPEND TARGET_LIBS winmm)
+else()
    # Shared library on Unix
-   SET(TARGET_TYPE SHARED)
+   set(TARGET_TYPE SHARED)
 
-   LIST(APPEND TARGET_LIBS resip)   
+   list(APPEND TARGET_LIBS resip)   
 
    # TODO Is this really needed?
-   IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-      LIST(APPEND TARGET_LIBS rt)
-   ENDIF()
+   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+      list(APPEND TARGET_LIBS rt)
+   endif()
 ENDIF()
 
-ADD_LIBRARY(dum ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
-TARGET_LINK_LIBRARIES(dum ${TARGET_LIBS})
-SET_TARGET_PROPERTIES(dum PROPERTIES FOLDER resip)
+add_library(dum ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
+target_link_libraries(dum ${TARGET_LIBS})
+set_target_properties(dum PROPERTIES FOLDER resip)
 
-INSTALL(TARGETS dum DESTINATION lib)
+install(TARGETS dum DESTINATION lib)
 
-INSTALL(FILES ${INCLUDES} DESTINATION include/resip/dum)
+install(FILES ${INCLUDES} DESTINATION include/resip/dum)
 
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)

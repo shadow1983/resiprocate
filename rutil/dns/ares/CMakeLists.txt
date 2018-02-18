@@ -1,4 +1,4 @@
-SET(INCLUDES
+set(INCLUDES
    ares.h
    ares_dns.h
    ares_private.h
@@ -8,7 +8,7 @@ SET(INCLUDES
    ares_socketfunc.h
 )
 
-SET(SOURCES
+set(SOURCES
    ares__close_sockets.c
    ares__get_hostent.c
    ares__read_line.c
@@ -33,33 +33,33 @@ SET(SOURCES
    ares_timeout.c
 )
 
-INCLUDE_DIRECTORIES(.)
+include_directories(.)
 
-IF(CMAKE_HOST_WIN32)
+if(CMAKE_HOST_WIN32)
    # Use static .lib on Windows because resip ares doesn't export any symbols
-   ADD_LIBRARY(ares ${SOURCES})
-   TARGET_LINK_LIBRARIES(ares PRIVATE ws2_32)
-ELSE()
-   ADD_LIBRARY(ares SHARED ${SOURCES})
-ENDIF()
+   add_library(ares ${SOURCES})
+   target_link_libraries(ares PRIVATE ws2_32)
+else()
+   add_library(ares SHARED ${SOURCES})
+endif()
 
-IF(APPLE)
-   TARGET_LINK_LIBRARIES(ares PRIVATE "-framework CoreFoundation")
-   TARGET_LINK_LIBRARIES(ares PRIVATE "-framework SystemConfiguration")
-ENDIF()
+if(APPLE)
+   target_link_libraries(ares PRIVATE "-framework CoreFoundation")
+   target_link_libraries(ares PRIVATE "-framework SystemConfiguration")
+endif()
 
-ADD_EXECUTABLE(ahost ahost.c)
-ADD_EXECUTABLE(adig adig.c)
+add_executable(ahost ahost.c)
+add_executable(adig adig.c)
 
-TARGET_LINK_LIBRARIES(ahost ares)
-TARGET_LINK_LIBRARIES(adig ares)
+target_link_libraries(ahost ares)
+target_link_libraries(adig ares)
 
-SET_TARGET_PROPERTIES(ares PROPERTIES FOLDER ares)
-SET_TARGET_PROPERTIES(ahost PROPERTIES FOLDER ares)
-SET_TARGET_PROPERTIES(adig PROPERTIES FOLDER ares)
+set_target_properties(ares PROPERTIES FOLDER ares)
+set_target_properties(ahost PROPERTIES FOLDER ares)
+set_target_properties(adig PROPERTIES FOLDER ares)
 
 # TODO: Do we need to also install ahost + adig?
-INSTALL(TARGETS ares DESTINATION lib)
+install(TARGETS ares DESTINATION lib)
 # TODO: Where to put resip ares' include files? Straight under
 # /usr/local/include or under rutil/...?
-INSTALL(FILES ${INCLUDES} DESTINATION include)
+install(FILES ${INCLUDES} DESTINATION include)

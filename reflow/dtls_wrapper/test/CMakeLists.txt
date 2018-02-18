@@ -1,17 +1,17 @@
-INCLUDE_DIRECTORIES(../..)
+include_directories(../..)
 
-FUNCTION(TEST)
-   TEST_BASE(${ARGV})
-   SET_TARGET_PROPERTIES(${ARGV0} PROPERTIES FOLDER reflow/Tests)
-   TARGET_LINK_LIBRARIES(${ARGV0} reflow rutil ${OPENSSL_LIBRARIES} ${SRTP_LIBRARIES})
-ENDFUNCTION()
+function(TEST)
+   test_base(${ARGV})
+   set_target_properties(${ARGV0} PROPERTIES FOLDER reflow/Tests)
+   target_link_libraries(${ARGV0} reflow rutil ${OPENSSL_LIBRARIES} ${SRTP_LIBRARIES})
+endfunction()
 
-SET(SHARED_SRC
+set(SHARED_SRC
    CreateCert.cxx
    TestDtlsUdp.cxx
    TestTimerContext.cxx
 )
 
-TEST(testDtlsWrapper testDtlsWrapper.cxx ${SHARED_SRC})
-TEST(testDtlsClient testDtlsClient.cxx ${SHARED_SRC})
-TEST(testDtlsServer testDtlsServer.cxx ${SHARED_SRC})
+test(testDtlsWrapper testDtlsWrapper.cxx ${SHARED_SRC})
+test(testDtlsClient testDtlsClient.cxx ${SHARED_SRC})
+test(testDtlsServer testDtlsServer.cxx ${SHARED_SRC})

@@ -1,5 +1,5 @@
 # Used for installation
-SET(INCLUDES
+set(INCLUDES
    AbandonServerTransaction.hxx
    AddTransport.hxx
    Aor.hxx
@@ -166,7 +166,7 @@ SET(INCLUDES
    ZeroOutStatistics.hxx
 )
 
-SET(INCLUDES_SSL
+set(INCLUDES_SSL
    ssl/DtlsTransport.hxx
    ssl/Security.hxx
    ssl/TlsBaseTransport.hxx
@@ -176,16 +176,16 @@ SET(INCLUDES_SSL
    ssl/WssTransport.hxx
 )
 
-SET(INCLUDES_SSL_MAC
+set(INCLUDES_SSL_MAC
    ssl/MacSecurity.hxx
 )
 
-SET(INCLUDES_SSL_WIN
+set(INCLUDES_SSL_WIN
    ssl/WinSecurity.hxx
 )
 
 # Used for compilation
-SET(SOURCES
+set(SOURCES
    Aor.cxx
    ApiCheck.cxx
    ApplicationSip.cxx
@@ -321,7 +321,7 @@ SET(SOURCES
    X509Contents.cxx
 )
 
-SET(SOURCES_SSL
+set(SOURCES_SSL
    ssl/DtlsTransport.cxx
    ssl/Security.cxx
    ssl/TlsBaseTransport.cxx
@@ -331,15 +331,15 @@ SET(SOURCES_SSL
    ssl/WssTransport.cxx
 )
 
-SET(SOURCES_SSL_MAC
+set(SOURCES_SSL_MAC
    ssl/MacSecurity.cxx
 )
 
-SET(SOURCES_SSL_WIN
+set(SOURCES_SSL_WIN
    ssl/WinSecurity.cxx
 )
 
-IF(TRUE)
+if(TRUE)
    LIST(APPEND SOURCES
       gen/DayOfWeekHash.cxx
       gen/HeaderHash.cxx
@@ -347,68 +347,68 @@ IF(TRUE)
       gen/MonthHash.cxx
       gen/ParameterHash.cxx
    )
-ENDIF()
+endif()
 
 # If compiling with OpenSSL support, add extra SSL related source and header
 # files
-IF(${OPENSSL_FOUND})
+if(OPENSSL_FOUND)
    LIST(APPEND SOURCES ${SOURCES_SSL}) 
    LIST(APPEND INCLUDES ${INCLUDES_SSL}) 
 
-   IF(CMAKE_HOST_WIN32)
+   if(CMAKE_HOST_WIN32)
       LIST(APPEND SOURCES ${SOURCES_SSL_WIN}) 
       LIST(APPEND INCLUDES_SSL ${INCLUDES_SSL_WIN})
-   ELSEIF(CMAKE_HOST_APPLE)
+   elseif(CMAKE_HOST_APPLE)
       LIST(APPEND SOURCES ${SOURCES_SSL_MAC}) 
       LIST(APPEND INCLUDES_SSL ${INCLUDES_SSL_MAC})
-   ENDIF()
+   endif()
    
    # Since some ssl files are under the ssl folder they require their own
    # INSTALL command
-   INSTALL(FILES ${INCLUDES_SSL} DESTINATION include/resip/stack/ssl)
-ENDIF()
+   install(FILES ${INCLUDES_SSL} DESTINATION include/resip/stack/ssl)
+endif()
 
-INCLUDE_DIRECTORIES(../..)
+include_directories(../..)
 
-SET(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil ${ARES_LIBRARIES})
+set(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil ${ARES_LIBRARIES})
 
-IF(CMAKE_HOST_WIN32)
+if(CMAKE_HOST_WIN32)
    # For whatever historical reason, on Windows the name of the library is not
    # resip but resiprocate.
-   SET(TARGET_NAME resiprocate)
+   set(TARGET_NAME resiprocate)
 
    # Static library on Windows
-   SET(TARGET_TYPE "")
+   set(TARGET_TYPE "")
 
    # Also add Windows-related source and header files
-   LIST(APPEND INCLUDES ${INCLUDES_SSL_WIN})
+   list(APPEND INCLUDES ${INCLUDES_SSL_WIN})
 
-   LIST(APPEND TARGET_LIBS winmm)
-ELSE()
-   SET(TARGET_NAME resip)
+   list(APPEND TARGET_LIBS winmm)
+else()
+   set(TARGET_NAME resip)
 
    # Shared library on Unix
-   SET(TARGET_TYPE SHARED)
+   set(TARGET_TYPE SHARED)
    
-   IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-      LIST(APPEND TARGET_LIBS rt)
-   ENDIF()
-ENDIF()
+   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+      list(APPEND TARGET_LIBS rt)
+   endif()
+endif()
 
-ADD_LIBRARY(${TARGET_NAME} ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
-TARGET_LINK_LIBRARIES(${TARGET_NAME} ${TARGET_LIBS})
-SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES FOLDER resip)
+add_library(${TARGET_NAME} ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
+target_link_libraries(${TARGET_NAME} ${TARGET_LIBS})
+set_target_properties(${TARGET_NAME} PROPERTIES FOLDER resip)
 
-IF(CMAKE_HOST_APPLE)
-   TARGET_LINK_LIBRARIES(${TARGET_NAME} "-framework CoreFoundation")
-   TARGET_LINK_LIBRARIES(${TARGET_NAME} "-framework CoreServices")
-   TARGET_LINK_LIBRARIES(${TARGET_NAME} "-framework Security")
-ENDIF()
+if(CMAKE_HOST_APPLE)
+   target_link_libraries(${TARGET_NAME} "-framework CoreFoundation")
+   target_link_libraries(${TARGET_NAME} "-framework CoreServices")
+   target_link_libraries(${TARGET_NAME} "-framework Security")
+endif()
 
-INSTALL(TARGETS ${TARGET_NAME} DESTINATION lib)
+install(TARGETS ${TARGET_NAME} DESTINATION lib)
 
-INSTALL(FILES ${INCLUDES} DESTINATION include/resip/stack)
+install(FILES ${INCLUDES} DESTINATION include/resip/stack)
 
 # TODO Is makeCert a standalone app?
 
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)

@@ -1,10 +1,10 @@
-INCLUDE_DIRECTORIES(../..)
+include_directories(../..)
 
-FUNCTION(TEST)
-   TEST_BASE(${ARGV})
-   SET_TARGET_PROPERTIES(${ARGV0} PROPERTIES FOLDER reTurn/Tests)
-   TARGET_LINK_LIBRARIES(${ARGV0} rutil reTurnClient)
-ENDFUNCTION()
+function(TEST)
+   test_base(${ARGV})
+   set_target_properties(${ARGV0} PROPERTIES FOLDER reTurn/Tests)
+   target_link_libraries(${ARGV0} rutil reTurnClient)
+endfunction()
 
 
-TEST(stunTestVectors stunTestVectors.cxx)
+test(stunTestVectors stunTestVectors.cxx)

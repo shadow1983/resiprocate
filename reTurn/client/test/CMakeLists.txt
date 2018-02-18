@@ -1,12 +1,12 @@
-INCLUDE_DIRECTORIES(../..)
+include_directories(../..)
 
-FUNCTION(TEST)
-   TEST_BASE(${ARGV})
-   SET_TARGET_PROPERTIES(${ARGV0} PROPERTIES FOLDER reTurn/client/Tests)
-   TARGET_LINK_LIBRARIES(${ARGV0} reTurnClient rutil ${OPENSSL_LIBRARIES})
-ENDFUNCTION()
+function(TEST)
+   test_base(${ARGV})
+   set_target_properties(${ARGV0} PROPERTIES FOLDER reTurn/client/Tests)
+   target_link_libraries(${ARGV0} reTurnClient rutil ${OPENSSL_LIBRARIES})
+endfunction()
 
 
-TEST(TestAsyncClient TestAsyncClient.cxx)
-TEST(TestRtpLoad TestRtpLoad.cxx)
-TEST(TestClient TestClient.cxx)
+test(TestAsyncClient TestAsyncClient.cxx)
+test(TestRtpLoad TestRtpLoad.cxx)
+test(TestClient TestClient.cxx)

@@ -1,5 +1,5 @@
 # TODO: Do we need to install libreTurnClient?
-SET(INCLUDES
+set(INCLUDES
    ../AsyncSocketBase.hxx
    ../AsyncTcpSocketBase.hxx
    ../AsyncTlsSocketBase.hxx
@@ -22,7 +22,7 @@ SET(INCLUDES
    TurnUdpSocket.hxx
 )
 
-SET(SOURCES
+set(SOURCES
    ../AsyncSocketBase.cxx
    ../AsyncTcpSocketBase.cxx
    ../AsyncTlsSocketBase.cxx
@@ -44,25 +44,25 @@ SET(SOURCES
    TurnUdpSocket.cxx
 )
 
-INCLUDE_DIRECTORIES(..)
+include_directories(..)
 
-SET(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil)
+set(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil)
 
-IF(CMAKE_HOST_WIN32)
+if(CMAKE_HOST_WIN32)
    # Static library on Windows
-   SET(TARGET_TYPE "")
+   set(TARGET_TYPE "")
    #LIST(APPEND TARGET_LIBS winmm)
-ELSE()
+else()
    # Shared library on Unix
-   SET(TARGET_TYPE SHARED)
+   set(TARGET_TYPE SHARED)
    
    #IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
    #   LIST(APPEND TARGET_LIBS rt)
    #ENDIF()
-ENDIF()
+endif()
 
-ADD_LIBRARY(reTurnClient ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
-TARGET_LINK_LIBRARIES(reTurnClient ${TARGET_LIBS})
-SET_TARGET_PROPERTIES(reTurnClient PROPERTIES FOLDER reTurn)
+add_library(reTurnClient ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
+target_link_libraries(reTurnClient ${TARGET_LIBS})
+set_target_properties(reTurnClient PROPERTIES FOLDER reTurn)
 
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)

@@ -1,5 +1,5 @@
 # Used for installation
-SET(INCLUDES
+set(INCLUDES
    ErrorCode.hxx
    FakeSelectSocketDescriptor.hxx
    Flow.hxx
@@ -12,7 +12,7 @@ SET(INCLUDES
 )
 
 # Special case because DTLS files are under "dtls_wrapper"
-SET(INCLUDES_DTLS_FOLDER
+set(INCLUDES_DTLS_FOLDER
    dtls_wrapper/bf_dwrap.h
    dtls_wrapper/DtlsFactory.hxx
    dtls_wrapper/DtlsSocket.hxx
@@ -20,7 +20,7 @@ SET(INCLUDES_DTLS_FOLDER
 )
 
 # Used for compilation
-SET(SOURCES
+set(SOURCES
    FakeSelectSocketDescriptor.cxx
    Flow.cxx
    FlowDtlsSocketContext.cxx
@@ -34,34 +34,34 @@ SET(SOURCES
    dtls_wrapper/DtlsTimer.cxx
 )
 
-LIST(APPEND INCLUDES ${INCLUDES_DTLS_FOLDER})
+list(APPEND INCLUDES ${INCLUDES_DTLS_FOLDER})
 
-INCLUDE_DIRECTORIES(..)
-INCLUDE_DIRECTORIES(dtls_wrapper)
+include_directories(..)
+include_directories(dtls_wrapper)
 
-SET(TARGET_LIBS rutil reTurnClient ${SRTP_LIBRARIES})
-#SET(TARGET_LIBS reTurn ${OPENSSL_LIBRARIES} ${ARES_LIBRARIES})
+set(TARGET_LIBS rutil reTurnClient ${SRTP_LIBRARIES})
+#set(TARGET_LIBS reTurn ${OPENSSL_LIBRARIES} ${ARES_LIBRARIES})
 
-IF(CMAKE_HOST_WIN32)
+if(CMAKE_HOST_WIN32)
    # Static library on Windows
    SET(TARGET_TYPE "")
 
 #   LIST(APPEND TARGET_LIBS winmm)
-ELSE()
+else()
    # Shared library on Unix
-   SET(TARGET_TYPE SHARED)
+   set(TARGET_TYPE SHARED)
    
-   IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 #      LIST(APPEND TARGET_LIBS rt)
-   ENDIF()
-ENDIF()
+   endif()
+endif()
 
-ADD_LIBRARY(reflow ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
-TARGET_LINK_LIBRARIES(reflow ${TARGET_LIBS})
-SET_TARGET_PROPERTIES(reflow PROPERTIES FOLDER reflow)
+add_library(reflow ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
+target_link_libraries(reflow ${TARGET_LIBS})
+set_target_properties(reflow PROPERTIES FOLDER reflow)
 
-INSTALL(TARGETS reflow DESTINATION lib)
-INSTALL(FILES ${INCLUDES} DESTINATION include/reflow)
-INSTALL(FILES ${INCLUDES_DTLS_FOLDER} DESTINATION include/reflow/dtls_wrapper)
+install(TARGETS reflow DESTINATION lib)
+install(FILES ${INCLUDES} DESTINATION include/reflow)
+install(FILES ${INCLUDES_DTLS_FOLDER} DESTINATION include/reflow/dtls_wrapper)
 
-ADD_SUBDIRECTORY(dtls_wrapper/test)
+add_subdirectory(dtls_wrapper/test)

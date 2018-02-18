@@ -1,5 +1,5 @@
 # Used for installation
-SET(INCLUDES
+set(INCLUDES
    AbstractFifo.hxx
    AndroidLogger.hxx
    AsyncID.hxx
@@ -72,17 +72,17 @@ SET(INCLUDES
    hep/ResipHep.hxx
 )
 
-SET(INCLUDES_WIN
+set(INCLUDES_WIN
    WinCompat.hxx
    WinLeakCheck.hxx
 )
 
-SET(INCLUDES_SSL
+set(INCLUDES_SSL
    DigestStream.hxx
 )
 
 # Special case because some SSL files are under "ssl"
-SET(INCLUDES_SSL_FOLDER
+set(INCLUDES_SSL_FOLDER
    ssl/OpenSSLInit.hxx
    ssl/SHA1Stream.hxx
 )
@@ -90,7 +90,7 @@ SET(INCLUDES_SSL_FOLDER
 # Special case because some stun files are under "stun"
 # TODO: Protect these using conditional compile? How does the autotools build
 # manage it?
-SET(INCLUDES_STUN_FOLDER
+set(INCLUDES_STUN_FOLDER
    stun/Stun.hxx
    stun/Udp.hxx
 )
@@ -99,7 +99,7 @@ SET(INCLUDES_STUN_FOLDER
 # everywhere...
 
 # Used for compilation
-SET(SOURCES
+set(SOURCES
    AbstractFifo.cxx
    AndroidLogger.cxx
    BaseException.cxx
@@ -167,12 +167,12 @@ SET(SOURCES
 )
 
 # TODO: Add WceCompat.cxx on WinCE
-SET(SOURCES_WIN
+set(SOURCES_WIN
    #wince/WceCompat.cxx
    WinCompat.cxx
 )
 
-SET(SOURCES_SSL
+set(SOURCES_SSL
 # TODO DigestStream.cxx doesn't seem to work on Windows... fix it or remove
 # file if not used at all?
 #   DigestStream.cxx
@@ -182,17 +182,17 @@ SET(SOURCES_SSL
 
 # If compiling with OpenSSL support, add extra SSL related source and header
 # files
-IF(${OPENSSL_FOUND})
-   LIST(APPEND SOURCES ${SOURCES_SSL}) 
-   LIST(APPEND INCLUDES ${INCLUDES_SSL})
-   LIST(APPEND INCLUDES ${INCLUDES_SSL_FOLDER})
+if(OPENSSL_FOUND)
+   list(APPEND SOURCES ${SOURCES_SSL}) 
+   list(APPEND INCLUDES ${INCLUDES_SSL})
+   list(APPEND INCLUDES ${INCLUDES_SSL_FOLDER})
 
    # Since some ssl files are under the ssl folder they require their own
    # INSTALL command
-   INSTALL(FILES ${INCLUDES_SSL_FOLDER} DESTINATION include/rutil/ssl)
-ENDIF()
+   install(FILES ${INCLUDES_SSL_FOLDER} DESTINATION include/rutil/ssl)
+endif()
 
-LIST(APPEND INCLUDES ${INCLUDES_STUN_FOLDER})
+list(APPEND INCLUDES ${INCLUDES_STUN_FOLDER})
 
 # TODO: Remove Windows .hxx header files from INSTALL if not Windows
 
@@ -200,43 +200,43 @@ LIST(APPEND INCLUDES ${INCLUDES_STUN_FOLDER})
 # Studio. For example stun/Stun.?xx is shown under VS in the root of the source
 # tree, omitting the stun subfolder.
 
-INCLUDE_DIRECTORIES(..)
+include_directories(..)
 
 # Whether or not to build resip-ares
-IF(NOT ${WITH_C_ARES})
-   ADD_SUBDIRECTORY(dns/ares)
-ENDIF()
+if(NOT ${WITH_C_ARES})
+   add_subdirectory(dns/ares)
+endif()
 
 # OPENSSL_LIBRARIES will be empty if SSL is not used
-SET(TARGET_LIBS ${OPENSSL_LIBRARIES} ${ARES_LIBRARIES})
+set(TARGET_LIBS ${OPENSSL_LIBRARIES} ${ARES_LIBRARIES})
 
-IF(CMAKE_HOST_WIN32)
+if(CMAKE_HOST_WIN32)
    # Static library on Windows
-   SET(TARGET_TYPE "")
+   set(TARGET_TYPE "")
 
    # Also add Windows-related source and header files
-   LIST(APPEND SOURCES ${SOURCES_WIN})
-   LIST(APPEND INCLUDES ${INCLUDES_WIN})
+   list(APPEND SOURCES ${SOURCES_WIN})
+   list(APPEND INCLUDES ${INCLUDES_WIN})
 
-   LIST(APPEND TARGET_LIBS winmm)
-ELSE()
+   list(APPEND TARGET_LIBS winmm)
+else()
    # Shared library on Unix
-   SET(TARGET_TYPE SHARED)
+   set(TARGET_TYPE SHARED)
    
-   IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-      LIST(APPEND TARGET_LIBS rt)
-   ENDIF()
-ENDIF()
+   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+      list(APPEND TARGET_LIBS rt)
+   endif()
+endif()
 
-ADD_LIBRARY(rutil ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
-TARGET_LINK_LIBRARIES(rutil ${TARGET_LIBS})
-SET_TARGET_PROPERTIES(rutil PROPERTIES FOLDER rutil)
+add_library(rutil ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
+target_link_libraries(rutil ${TARGET_LIBS})
+set_target_properties(rutil PROPERTIES FOLDER rutil)
 
-INSTALL(TARGETS rutil DESTINATION lib)
-INSTALL(FILES ${INCLUDES} DESTINATION include/rutil)
+install(TARGETS rutil DESTINATION lib)
+install(FILES ${INCLUDES} DESTINATION include/rutil)
 
 # Since some stun files are under the stun folder they require their own
 # INSTALL command
-INSTALL(FILES ${INCLUDES_STUN_FOLDER} DESTINATION include/rutil/stun)
+install(FILES ${INCLUDES_STUN_FOLDER} DESTINATION include/rutil/stun)
 
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)

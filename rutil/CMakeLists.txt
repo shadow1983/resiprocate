@@ -78,7 +78,6 @@ set(INCLUDES_WIN
 )
 
 set(INCLUDES_SSL
-   DigestStream.hxx
 )
 
 # Special case because some SSL files are under "ssl"
@@ -173,9 +172,6 @@ set(SOURCES_WIN
 )
 
 set(SOURCES_SSL
-# TODO DigestStream.cxx doesn't seem to work on Windows... fix it or remove
-# file if not used at all?
-#   DigestStream.cxx
    ssl/OpenSSLInit.cxx
    ssl/SHA1Stream.cxx
 )

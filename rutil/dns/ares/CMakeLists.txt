@@ -38,7 +38,7 @@ if(WIN32)
    add_library(resipares STATIC ${SOURCES})
    target_link_libraries(resipares PRIVATE ws2_32)
 else()
-   add_library(resipares ${SOURCES})
+   add_library(resipares ${SOURCES} ${INCLUDES})
 endif()
 
 target_include_directories(resipares PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>)
@@ -62,8 +62,5 @@ set_target_properties(resipares PROPERTIES FOLDER ares)
 set_target_properties(ahost PROPERTIES FOLDER ares)
 set_target_properties(adig PROPERTIES FOLDER ares)
 
-# TODO: Do we need to also install ahost + adig?
 install(TARGETS resipares DESTINATION ${CMAKE_INSTALL_LIBDIR})
-# TODO: Where to put resip ares' include files? Straight under
-# /usr/local/include or under rutil/...?
-install(FILES ${INCLUDES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES ${INCLUDES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rutil/dns/ares)

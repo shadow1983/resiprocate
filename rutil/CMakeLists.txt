@@ -68,6 +68,26 @@ set(INCLUDES
    vmd5.hxx
    vthread.hxx
 
+   dns/ExternalDnsFactory.hxx
+   dns/DnsStub.hxx
+   dns/DnsHostRecord.hxx
+   dns/QueryTypes.hxx
+   dns/RROverlay.hxx
+   dns/AresCompat.hxx
+   dns/ExternalDns.hxx
+   dns/DnsNaptrRecord.hxx
+   dns/RRList.hxx
+   dns/LocalDns.hxx
+   dns/RRFactory.hxx
+   dns/DnsSrvRecord.hxx
+   dns/DnsCnameRecord.hxx
+   dns/AresDns.hxx
+   dns/RRCache.hxx
+   dns/DnsHandler.hxx
+   dns/RRVip.hxx
+   dns/DnsAAAARecord.hxx
+   dns/DnsResourceRecord.hxx
+
    hep/HepAgent.hxx
    hep/ResipHep.hxx
 )

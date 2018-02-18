@@ -201,7 +201,7 @@ set(SOURCES_SSL
 
 # If compiling with OpenSSL support, add extra SSL related source and header
 # files
-if(${OPENSSL_FOUND})
+if(OPENSSL_FOUND)
    list(APPEND SOURCES ${SOURCES_SSL}) 
    list(APPEND INCLUDES ${INCLUDES_SSL}) 
    
@@ -210,36 +210,23 @@ if(${OPENSSL_FOUND})
    install(FILES ${INCLUDES_SSL} DESTINATION include/resip/dum/ssl)
 endif()
 
-include_directories(../..)
+set(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil resip ${ARES_LIBRARIES})
 
-set(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil ${ARES_LIBRARIES})
-
-if(CMAKE_HOST_WIN32)
-   # Static library on Windows
-   set(TARGET_TYPE "")
-
-   list(APPEND TARGET_LIBS resiprocate)
-
+if(WIN32)
    # TODO Is this really needed?
    list(APPEND TARGET_LIBS winmm)
-else()
-   # Shared library on Unix
-   set(TARGET_TYPE SHARED)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   list(APPEND TARGET_LIBS rt)
+endif()
 
-   list(APPEND TARGET_LIBS resip)   
-
-   # TODO Is this really needed?
-   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-      list(APPEND TARGET_LIBS rt)
-   endif()
-ENDIF()
-
-add_library(dum ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
+add_library(dum ${SOURCES} ${INCLUDES})
+target_include_directories(dum PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>)
 target_link_libraries(dum ${TARGET_LIBS})
+set_target_properties(dum PROPERTIES VERSION ${SO_RELEASE})
 set_target_properties(dum PROPERTIES FOLDER resip)
 
-install(TARGETS dum DESTINATION lib)
+install(TARGETS dum DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-install(FILES ${INCLUDES} DESTINATION include/resip/dum)
+install(FILES ${INCLUDES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/resip/dum)
 
 add_subdirectory(test)

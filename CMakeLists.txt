@@ -1,10 +1,12 @@
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 if(POLICY CMP0042)
   CMAKE_POLICY(SET CMP0042 NEW)
 endif(POLICY CMP0042)
 
-project(reSIProcate)
+project(reSIProcate VERSION 1.11.0)
+
+include(GNUInstallDirs)
 
 enable_testing()
 
@@ -19,6 +21,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/build/cmake_modu
 # specified on the command line, using cmake-gui or ccmake.
 option(WITH_SSL "Link against SSL libraries" TRUE)
 option(WITH_C_ARES "Link against libc-ares (rather than rutil/dns/ares)" FALSE)
+option(BUILD_SHARED_LIBS "Build libraries as shared" TRUE)
 
 ####################
 ### Dependencies ###
@@ -61,7 +64,7 @@ else()
    # c-ares if also present.
    include_directories(BEFORE rutil/dns/ares)
    
-   set(ARES_LIBRARIES ares)
+   set(ARES_LIBRARIES resipares)
 endif()
 
 # popt
@@ -132,6 +135,10 @@ check_c_source_runs("
 if(HAVE_CLOCK_GETTIME_MONOTONIC})
    add_definitions(-DHAVE_CLOCK_GETTIME_MONOTONIC)
 endif()
+
+# shared library versioning
+
+set(SO_RELEASE "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
 
 ##############################
 ### Generation of config.h ###

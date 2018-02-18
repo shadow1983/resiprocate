@@ -365,49 +365,41 @@ if(OPENSSL_FOUND)
    
    # Since some ssl files are under the ssl folder they require their own
    # INSTALL command
-   install(FILES ${INCLUDES_SSL} DESTINATION include/resip/stack/ssl)
+   install(FILES ${INCLUDES_SSL} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/resip/stack/ssl)
 endif()
-
-include_directories(../..)
 
 set(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil ${ARES_LIBRARIES})
 
-if(CMAKE_HOST_WIN32)
-   # For whatever historical reason, on Windows the name of the library is not
-   # resip but resiprocate.
-   set(TARGET_NAME resiprocate)
-
-   # Static library on Windows
-   set(TARGET_TYPE "")
-
+if(WIN32)
    # Also add Windows-related source and header files
    list(APPEND INCLUDES ${INCLUDES_SSL_WIN})
-
    list(APPEND TARGET_LIBS winmm)
-else()
-   set(TARGET_NAME resip)
-
-   # Shared library on Unix
-   set(TARGET_TYPE SHARED)
-   
-   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-      list(APPEND TARGET_LIBS rt)
-   endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   list(APPEND TARGET_LIBS rt)
 endif()
 
-add_library(${TARGET_NAME} ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
-target_link_libraries(${TARGET_NAME} ${TARGET_LIBS})
-set_target_properties(${TARGET_NAME} PROPERTIES FOLDER resip)
+add_library(resip ${SOURCES} ${INCLUDES})
 
-if(CMAKE_HOST_APPLE)
-   target_link_libraries(${TARGET_NAME} "-framework CoreFoundation")
-   target_link_libraries(${TARGET_NAME} "-framework CoreServices")
-   target_link_libraries(${TARGET_NAME} "-framework Security")
+if(WIN32)
+   # For whatever historical reason, on Windows the name of the library is not
+   # resip but resiprocate.
+   set_target_properties(resip PROPERTIES OUTPUT_NAME resiprocate)
 endif()
 
-install(TARGETS ${TARGET_NAME} DESTINATION lib)
+target_include_directories(resip PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>)
+target_link_libraries(resip ${TARGET_LIBS})
+set_target_properties(resip PROPERTIES VERSION ${SO_RELEASE})
+set_target_properties(resip PROPERTIES FOLDER resip)
 
-install(FILES ${INCLUDES} DESTINATION include/resip/stack)
+if(APPLE)
+   target_link_libraries(resip "-framework CoreFoundation")
+   target_link_libraries(resip "-framework CoreServices")
+   target_link_libraries(resip "-framework Security")
+endif()
+
+install(TARGETS resip DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+install(FILES ${INCLUDES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/resip/stack)
 
 # TODO Is makeCert a standalone app?
 

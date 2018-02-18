@@ -189,7 +189,7 @@ if(OPENSSL_FOUND)
 
    # Since some ssl files are under the ssl folder they require their own
    # INSTALL command
-   install(FILES ${INCLUDES_SSL_FOLDER} DESTINATION include/rutil/ssl)
+   install(FILES ${INCLUDES_SSL_FOLDER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rutil/ssl)
 endif()
 
 list(APPEND INCLUDES ${INCLUDES_STUN_FOLDER})
@@ -200,43 +200,34 @@ list(APPEND INCLUDES ${INCLUDES_STUN_FOLDER})
 # Studio. For example stun/Stun.?xx is shown under VS in the root of the source
 # tree, omitting the stun subfolder.
 
-include_directories(..)
-
 # Whether or not to build resip-ares
-if(NOT ${WITH_C_ARES})
+if(NOT WITH_C_ARES)
    add_subdirectory(dns/ares)
 endif()
 
 # OPENSSL_LIBRARIES will be empty if SSL is not used
 set(TARGET_LIBS ${OPENSSL_LIBRARIES} ${ARES_LIBRARIES})
 
-if(CMAKE_HOST_WIN32)
-   # Static library on Windows
-   set(TARGET_TYPE "")
-
+if(WIN32)
    # Also add Windows-related source and header files
    list(APPEND SOURCES ${SOURCES_WIN})
    list(APPEND INCLUDES ${INCLUDES_WIN})
 
    list(APPEND TARGET_LIBS winmm)
-else()
-   # Shared library on Unix
-   set(TARGET_TYPE SHARED)
-   
-   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-      list(APPEND TARGET_LIBS rt)
-   endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   list(APPEND TARGET_LIBS rt)
 endif()
 
-add_library(rutil ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
+add_library(rutil ${SOURCES} ${INCLUDES})
+target_include_directories(rutil PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>)
 target_link_libraries(rutil ${TARGET_LIBS})
-set_target_properties(rutil PROPERTIES FOLDER rutil)
+set_target_properties(rutil PROPERTIES FOLDER rutil VERSION ${SO_RELEASE})
 
-install(TARGETS rutil DESTINATION lib)
-install(FILES ${INCLUDES} DESTINATION include/rutil)
+install(TARGETS rutil DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(FILES ${INCLUDES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rutil)
 
 # Since some stun files are under the stun folder they require their own
 # INSTALL command
-install(FILES ${INCLUDES_STUN_FOLDER} DESTINATION include/rutil/stun)
+install(FILES ${INCLUDES_STUN_FOLDER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rutil/stun)
 
 add_subdirectory(test)

@@ -49,6 +49,7 @@ set(INCLUDES
    HEPSipMessageLoggingHandler.hxx
    HeaderFieldValue.hxx
    HeaderFieldValueList.hxx
+   HeaderHash.hxx
    Headers.hxx
    HeaderTypes.hxx
    Helper.hxx
@@ -68,6 +69,7 @@ set(INCLUDES
    MessageFilterRule.hxx
    MessageWaitingContents.hxx
    MethodTypes.hxx
+   MethodHash.hxx
    Mime.hxx
    MsgHeaderScanner.hxx
    MultipartAlternativeContents.hxx
@@ -77,6 +79,7 @@ set(INCLUDES
    NameAddr.hxx
    NonceHelper.hxx
    OctetContents.hxx
+   ParameterHash.hxx
    Parameter.hxx
    ParameterTypeEnums.hxx
    ParameterTypes.hxx
@@ -94,6 +97,7 @@ set(INCLUDES
    QValue.hxx
    QValueParameter.hxx
    RAckCategory.hxx
+   RemoveTransport.hxx
    RequestLine.hxx
    Rlmi.hxx
    RportParameter.hxx

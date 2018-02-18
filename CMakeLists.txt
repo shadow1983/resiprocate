@@ -1,14 +1,14 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
-IF(POLICY CMP0042)
+if(POLICY CMP0042)
   CMAKE_POLICY(SET CMP0042 NEW)
-ENDIF(POLICY CMP0042)
+endif(POLICY CMP0042)
 
-PROJECT(reSIProcate)
+project(reSIProcate)
 
-ENABLE_TESTING()
+enable_testing()
 
-SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/build/cmake_modules/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/build/cmake_modules/")
 
 # TODO: Add doxygen support
 
@@ -17,111 +17,111 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/build/cmake_modu
 # Top-level user-settable variables (with defaults)
 # Those can be queried from the command line using "cmake -LH" and can be
 # specified on the command line, using cmake-gui or ccmake.
-OPTION(WITH_SSL "Link against SSL libraries" TRUE)
-OPTION(WITH_C_ARES "Link against libc-ares (rather than rutil/dns/ares)" FALSE)
+option(WITH_SSL "Link against SSL libraries" TRUE)
+option(WITH_C_ARES "Link against libc-ares (rather than rutil/dns/ares)" FALSE)
 
 ####################
 ### Dependencies ###
 ####################
 
 # OpenSSL
-IF(${WITH_SSL})
-   # SSL support is requested, so make it mandatory when calling FIND_PACKAGE
-   FIND_PACKAGE(OpenSSL REQUIRED)
-   IF(${OPENSSL_FOUND})
-      SET(USE_SSL true)
-      ADD_DEFINITIONS(-DUSE_SSL)
-      INCLUDE_DIRECTORIES(${OPENSSL_INCLUDE_DIR})
-   ELSE()
-      MESSAGE(FATAL_ERROR "Could not find OpenSSL")
-   ENDIF()
-ELSE()
+if(WITH_SSL)
+   # SSL support is requested, so make it mandatory when calling find_package
+   find_package(OpenSSL REQUIRED)
+   if(OPENSSL_FOUND)
+      set(USE_SSL true)
+      add_definitions(-DUSE_SSL)
+      include_directories(${OPENSSL_INCLUDE_DIR})
+   else()
+      message(FATAL_ERROR "Could not find OpenSSL")
+   endif()
+else()
    # Explicitly set OPENSSL_FOUND to false since we didn't even run
-   # FIND_PACKAGE on it. It needs to be set to false for other CMake scripts to
+   # find_package on it. It needs to be set to false for other CMake scripts to
    # no it is not being used.
-   SET(OPENSSL_FOUND "FALSE")
-ENDIF()
+   set(OPENSSL_FOUND "FALSE")
+endif()
 
 # ares
-IF(${WITH_C_ARES})
+if(WITH_C_ARES)
    # Don't use built-in ares
-   FIND_PACKAGE(cares REQUIRED)
+   find_package(cares REQUIRED)
 
-   SET(USE_CARES true)
-   ADD_DEFINITIONS(-DUSE_CARES)
+   set(USE_CARES true)
+   add_definitions(-DUSE_CARES)
 
-   SET(ARES_LIBRARIES ${CARES_LIBRARIES})
-   INCLUDE_DIRECTORIES(${CARES_INCLUDE_DIRS})
-ELSE()
+   set(ARES_LIBRARIES ${CARES_LIBRARIES})
+   include_directories(${CARES_INCLUDE_DIRS})
+else()
    # Use built-in ares
-   SET(USE_ARES true)
-   ADD_DEFINITIONS(-DUSE_ARES)
+   set(USE_ARES true)
+   add_definitions(-DUSE_ARES)
 
    # Put the resip ares include dir before the system ones to not conflict with
    # c-ares if also present.
-   INCLUDE_DIRECTORIES(BEFORE rutil/dns/ares)
+   include_directories(BEFORE rutil/dns/ares)
    
-   SET(ARES_LIBRARIES ares)
-ENDIF()
+   set(ARES_LIBRARIES ares)
+endif()
 
 # popt
-FIND_PACKAGE(popt)
-IF(${POPT_FOUND})
-   SET(HAVE_POPT_H true)
-   ADD_DEFINITIONS(-DHAVE_POPT_H)
-   INCLUDE_DIRECTORIES(${POPT_INCLUDE_DIRS})
-ELSE()
-   SET(POPT_LIBRARIES "")
-ENDIF()
+find_package(popt)
+IF(POPT_FOUND)
+   set(HAVE_POPT_H true)
+   add_definitions(-DHAVE_POPT_H)
+   include_directories(${POPT_INCLUDE_DIRS})
+else()
+   set(POPT_LIBRARIES "")
+endif()
 
 # ASIO
-FIND_PACKAGE(ASIO)
-IF(${ASIO_FOUND})
-   INCLUDE_DIRECTORIES(${ASIO_INCLUDE_DIRS})
-ENDIF()
+find_package(ASIO)
+if(ASIO_FOUND)
+   include_directories(${ASIO_INCLUDE_DIRS})
+endif()
 
 # Boost.Asio
 # TODO: Is using Boost's asio OK? Or should it use the old/independant asio
 # libs?
-FIND_PACKAGE(Boost)
-IF(${Boost_FOUND})
-   INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-ENDIF()
+find_package(Boost)
+if(${Boost_FOUND})
+   include_directories(${Boost_INCLUDE_DIRS})
+endif()
 
 # SRTP
-FIND_PACKAGE(srtp)
-IF(${SRTP_FOUND})
-   INCLUDE_DIRECTORIES(${SRTP_INCLUDE_DIRS})
-ENDIF()
+find_package(srtp)
+if(${SRTP_FOUND})
+   include_directories(${SRTP_INCLUDE_DIRS})
+endif()
 
 # Python
 #INCLUDE(FindPythonLibs)
 
 # Cajun
-FIND_PACKAGE(cajun)
-IF(${CAJUN_FOUND})
-   INCLUDE_DIRECTORIES(${CAJUN_INCLUDE_DIRS})
-ENDIF()
+find_package(cajun)
+if(${CAJUN_FOUND})
+   include_directories(${CAJUN_INCLUDE_DIRS})
+endif()
 
 # BerkeleyDb
-FIND_PACKAGE(BerkeleyDb)
-IF(${BERKELEYDB_FOUND})
-   INCLUDE_DIRECTORIES(${BERKELEYDB_INCLUDE_DIRS})
-   SET(DB_HEADER "db_cxx.h")
-ENDIF()
+find_package(BerkeleyDb)
+if(${BERKELEYDB_FOUND})
+   include_directories(${BERKELEYDB_INCLUDE_DIRS})
+   set(DB_HEADER "db_cxx.h")
+endif()
 
 # epoll
-INCLUDE(CheckIncludeFiles)
-CHECK_INCLUDE_FILES(sys/epoll.h HAVE_EPOLL)
+include(CheckIncludeFiles)
+check_include_files(sys/epoll.h HAVE_EPOLL)
 
 # monotonic clock
-INCLUDE(CheckCSourceRuns)
+include(CheckCSourceRuns)
 
-IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-   SET(CMAKE_REQUIRED_LIBRARIES rt)
-ENDIF()
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   set(CMAKE_REQUIRED_LIBRARIES rt)
+endif()
 
-CHECK_C_SOURCE_RUNS("
+check_c_source_runs("
    #include <time.h>
    int main() {
       struct timespec ts;
@@ -129,61 +129,49 @@ CHECK_C_SOURCE_RUNS("
       return 0;
    }" HAVE_CLOCK_GETTIME_MONOTONIC)
 
-IF(${HAVE_CLOCK_GETTIME_MONOTONIC})
-   ADD_DEFINITIONS(-DHAVE_CLOCK_GETTIME_MONOTONIC)
-ENDIF()
+if(HAVE_CLOCK_GETTIME_MONOTONIC})
+   add_definitions(-DHAVE_CLOCK_GETTIME_MONOTONIC)
+endif()
 
 ##############################
 ### Generation of config.h ###
 ##############################
 # TODO - Bring more values from autotools
-ADD_DEFINITIONS(-DHAVE_CONFIG_H)
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+add_definitions(-DHAVE_CONFIG_H)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # This helper is used by the unit tests
-FUNCTION(TEST_BASE)
-   ADD_EXECUTABLE(
-      ${ARGV0}
-      ${ARGV1}
-      ${ARGV2}
-      ${ARGV3}
-      ${ARGV4}
-      ${ARGV5}
-      ${ARGV6}
-      ${ARGV7}
-      ${ARGV8}
-      ${ARGV9}
-      ${ARGV10}
-   )
-   ADD_TEST(NAME ${ARGV0} COMMAND $<TARGET_FILE:${ARGV0}>)
-ENDFUNCTION(TEST_BASE)
+function(TEST_BASE target)
+   add_executable(${target} ${ARGN})
+   add_test(NAME ${target} COMMAND $<TARGET_FILE:${target}>)
+endfunction(TEST_BASE)
 
 # Used to group targets together when CMake generates projects for IDEs
-SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-ADD_SUBDIRECTORY(rutil)
-ADD_SUBDIRECTORY(resip)
+add_subdirectory(rutil)
+add_subdirectory(resip)
 
 # CMake repro support is still in the works...
-IF(${CAJUN_FOUND})
+if(CAJUN_FOUND)
 # TODO: repro
-#   ADD_SUBDIRECTORY(repro)
-ELSE()
-   MESSAGE("-- Missing cajun, will not build repro")
-ENDIF()
+#   add_subdirectory(repro)
+else()
+   message(STATUS "Missing cajun, will not build repro")
+endif()
 
-IF(${OPENSSL_FOUND} AND ${ASIO_FOUND} AND ${Boost_FOUND})
-   ADD_SUBDIRECTORY(reTurn)
-ELSE()
-   MESSAGE("-- Missing libraries, will not build reTurn")
-ENDIF()
+if(OPENSSL_FOUND AND ASIO_FOUND AND Boost_FOUND)
+   add_subdirectory(reTurn)
+else()
+   message(STATUS "Missing libraries, will not build reTurn")
+endif()
 
-IF(${OPENSSL_FOUND} AND ${ASIO_FOUND} AND ${Boost_FOUND} AND ${SRTP_FOUND})
-   ADD_SUBDIRECTORY(reflow)
-ELSE()
-   MESSAGE("-- Missing libraries, will not build reFlow")
-ENDIF()
+if(OPENSSL_FOUND AND ASIO_FOUND AND Boost_FOUND AND SRTP_FOUND)
+   add_subdirectory(reflow)
+else()
+   message(STATUS "Missing libraries, will not build reFlow")
+endif()
 
 ###############
 ### Summary ###

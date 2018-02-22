@@ -39,29 +39,12 @@ list(APPEND INCLUDES ${INCLUDES_DTLS_FOLDER})
 include_directories(..)
 include_directories(dtls_wrapper)
 
-set(TARGET_LIBS rutil reTurnClient ${SRTP_LIBRARIES})
-#set(TARGET_LIBS reTurn ${OPENSSL_LIBRARIES} ${ARES_LIBRARIES})
-
-if(CMAKE_HOST_WIN32)
-   # Static library on Windows
-   SET(TARGET_TYPE "")
-
-#   LIST(APPEND TARGET_LIBS winmm)
-else()
-   # Shared library on Unix
-   set(TARGET_TYPE SHARED)
-   
-   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-#      LIST(APPEND TARGET_LIBS rt)
-   endif()
-endif()
-
-add_library(reflow ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
-target_link_libraries(reflow ${TARGET_LIBS})
+add_library(reflow ${SOURCES} ${INCLUDES})
+target_link_libraries(reflow rutil reTurnClient ${SRTP_LIBRARIES})
 set_target_properties(reflow PROPERTIES FOLDER reflow)
 
-install(TARGETS reflow DESTINATION lib)
-install(FILES ${INCLUDES} DESTINATION include/reflow)
-install(FILES ${INCLUDES_DTLS_FOLDER} DESTINATION include/reflow/dtls_wrapper)
+install(TARGETS reflow DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES ${INCLUDES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/reflow)
+install(FILES ${INCLUDES_DTLS_FOLDER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/reflow/dtls_wrapper)
 
 add_subdirectory(dtls_wrapper/test)

@@ -46,23 +46,8 @@ set(SOURCES
 
 include_directories(..)
 
-set(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil)
-
-if(CMAKE_HOST_WIN32)
-   # Static library on Windows
-   set(TARGET_TYPE "")
-   #LIST(APPEND TARGET_LIBS winmm)
-else()
-   # Shared library on Unix
-   set(TARGET_TYPE SHARED)
-   
-   #IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-   #   LIST(APPEND TARGET_LIBS rt)
-   #ENDIF()
-endif()
-
 add_library(reTurnClient ${TARGET_TYPE} ${SOURCES} ${INCLUDES})
-target_link_libraries(reTurnClient ${TARGET_LIBS})
+target_link_libraries(reTurnClient ${OPENSSL_LIBRARIES} rutil)
 set_target_properties(reTurnClient PROPERTIES FOLDER reTurn)
 
 add_subdirectory(test)

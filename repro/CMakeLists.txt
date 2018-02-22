@@ -69,7 +69,7 @@ add_library(repro SHARED ${repro_LIB_SRCS})
 target_link_libraries(repro db_cxx)
 
 set_target_properties(repro PROPERTIES VERSION 4.2.0 SOVERSION 4)
-install(TARGETS repro DESTINATION lib)
+install(TARGETS repro DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 
 ########### install files ###############

@@ -61,15 +61,12 @@ set(SOURCES
    reTurnServer.cxx
 )
 
-include_directories(..)
-
-set(TARGET_LIBS ${OPENSSL_LIBRARIES} rutil)
-
 add_executable(reTurnServer ${SOURCES} ${INCLUDES})
-target_link_libraries(reTurnServer ${TARGET_LIBS})
+target_include_directories(reTurnServer PRIVATE ${PROJECT_SOURCE_DIR})
+target_link_libraries(reTurnServer ${OPENSSL_LIBRARIES} rutil)
 set_target_properties(reTurnServer PROPERTIES FOLDER reTurn)
 
-install(TARGETS reTurnServer DESTINATION bin)
+install(TARGETS reTurnServer DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 add_subdirectory(client)
 add_subdirectory(test)

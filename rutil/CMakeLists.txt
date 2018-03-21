@@ -14,6 +14,7 @@ set(INCLUDES
    CountStream.hxx
    Data.hxx
    DataException.hxx
+   DataStream.hxx
    DinkyPool.hxx
    DnsUtil.hxx
    FdPoll.hxx
@@ -68,6 +69,25 @@ set(INCLUDES
    vmd5.hxx
    vthread.hxx
 
+   hep/HepAgent.hxx
+   hep/ResipHep.hxx
+)
+
+set(INCLUDES_WIN
+   WinCompat.hxx
+   WinLeakCheck.hxx
+)
+
+set(INCLUDES_SSL
+)
+
+# Special case because some SSL files are under "ssl"
+set(INCLUDES_SSL_FOLDER
+   ssl/OpenSSLInit.hxx
+   ssl/SHA1Stream.hxx
+)
+
+set(INCLUDES_DNS_FOLDER
    dns/ExternalDnsFactory.hxx
    dns/DnsStub.hxx
    dns/DnsHostRecord.hxx
@@ -87,25 +107,7 @@ set(INCLUDES
    dns/RRVip.hxx
    dns/DnsAAAARecord.hxx
    dns/DnsResourceRecord.hxx
-
-   hep/HepAgent.hxx
-   hep/ResipHep.hxx
 )
-
-set(INCLUDES_WIN
-   WinCompat.hxx
-   WinLeakCheck.hxx
-)
-
-set(INCLUDES_SSL
-)
-
-# Special case because some SSL files are under "ssl"
-set(INCLUDES_SSL_FOLDER
-   ssl/OpenSSLInit.hxx
-   ssl/SHA1Stream.hxx
-)
-
 # Special case because some stun files are under "stun"
 # TODO: Protect these using conditional compile? How does the autotools build
 # manage it?
@@ -209,6 +211,8 @@ if(OPENSSL_FOUND)
 endif()
 
 list(APPEND INCLUDES ${INCLUDES_STUN_FOLDER})
+list(APPEND INCLUDES ${INCLUDES_DNS_FOLDER})
+install(FILES ${INCLUDES_DNS_FOLDER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rutil/dns)
 
 # TODO: Remove Windows .hxx header files from INSTALL if not Windows
 

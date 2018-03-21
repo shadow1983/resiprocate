@@ -5,6 +5,7 @@ if(POLICY CMP0042)
 endif(POLICY CMP0042)
 
 project(reSIProcate VERSION 1.11.0)
+set(CMAKE_CXX_STANDARD 14)
 
 include(GNUInstallDirs)
 

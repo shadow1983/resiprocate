@@ -1,4 +1,10 @@
 
+#ifdef WIN32
+#include <WinSock2.h>
+#include <windows.h>
+
+#endif
+
 #if defined(HAVE_CONFIG_H)
   #include "config.h"
 #endif

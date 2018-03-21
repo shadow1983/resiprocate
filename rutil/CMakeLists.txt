@@ -226,7 +226,7 @@ if(NOT WITH_C_ARES)
 endif()
 
 # OPENSSL_LIBRARIES will be empty if SSL is not used
-set(TARGET_LIBS ${OPENSSL_LIBRARIES} ${ARES_LIBRARIES})
+set(TARGET_LIBS CONAN_PKG::openssl ${ARES_LIBRARIES})
 
 if(WIN32)
    # Also add Windows-related source and header files

@@ -2,8 +2,9 @@
 
 #include <cassert>
 #include <sys/types.h>
+#ifndef WIN32
 #include <ifaddrs.h>
-
+#endif
 #include "rutil/Log.hxx"
 #include "rutil/NetNs.hxx"
 #include "rutil/HashMap.hxx"

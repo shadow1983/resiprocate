@@ -32,7 +32,8 @@
 // This is used as a "barrier" at which you want all the above timeouts
 // to happen.  You'll want one at the end of your test, for example.
 
-#ifndef __MINGW32__
+
+#if ! defined(__MINGW32__) && ! defined(WIN32)
 
 #include <sys/time.h>
 #include <sys/types.h>

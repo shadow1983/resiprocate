@@ -4,6 +4,7 @@
   #include "config.h"
 #endif
 
+#pragma comment(lib, "Ncrypt.lib")
 
 #ifdef USE_SSL
 #include "resip/stack/ssl/WinSecurity.hxx"

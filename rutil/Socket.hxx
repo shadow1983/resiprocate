@@ -7,6 +7,8 @@
 
 #ifdef WIN32
 #include <winsock2.h>
+#include <windows.h>
+
 #include <stdlib.h>
 #include <io.h>
 #include <WS2TCPIP.H>

@@ -1,11 +1,16 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
+
 if(POLICY CMP0042)
   CMAKE_POLICY(SET CMP0042 NEW)
 endif(POLICY CMP0042)
 
 project(reSIProcate VERSION 1.11.0)
 set(CMAKE_CXX_STANDARD 14)
+
+include (conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
+
 
 include(GNUInstallDirs)
 
